@@ -1,0 +1,40 @@
+body{
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#logo {
+
+}
+
+#panels_container{
+  display: flex;      
+  background-color: red;
+  height: 100%;
+}
+
+#examples_list_panel {
+  flex: 20%;
+  background-color: bisque;
+}
+
+#examples_list{
+  /*styl linka*/ 
+}
+
+#code_panel {
+  flex: 50%;      
+  background-color: olivedrab;
+}
+
+#output_panel {
+  flex: 40%;
+  background-color: orange;
+}
+
+#code_editor {
+  min-height: 200px;
+  background-color: aqua;
+  position: absolute;
+  width: 500px;
+  height: 400px;
+}
