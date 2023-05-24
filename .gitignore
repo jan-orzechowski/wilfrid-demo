@@ -1,2 +1,8 @@
 .vscode
 ace/ace.js
+wasm
+
+# debug
+
+scraps.js
+debug_deploy.bat
