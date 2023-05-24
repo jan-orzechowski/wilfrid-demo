@@ -51,13 +51,20 @@ function initialize_examples_list() {
         list_el.appendChild(example_el);
     }
 
+    let previously_clicked_el = null;
     list_el.addEventListener("click", function(event) {
         let example_el = event.target;
         let example_title = example_el.getAttribute("data-example");
         if (example_title) {
-            console.log("clicked: " + example_title);
             let code = get_example_code_by_title(examples, example_title);
+            
             editor_load_text(code);
+
+            if (previously_clicked_el) {
+                previously_clicked_el.classList.remove("example_selected");                
+            } 
+            example_el.classList.add("example_selected");
+            previously_clicked_el = example_el;
         }
     });
 

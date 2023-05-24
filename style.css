@@ -71,6 +71,10 @@ body {
   padding-left: 10px;
   padding-right: 10px;
 }
+
+.example_list_element.example_selected {
+  color: white;
+  background-color: darkblue;
 }
 
 #code_editor {
