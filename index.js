@@ -4,45 +4,69 @@ editor.setOptions({
     fontSize: "16px"
 });
 
-function get_example(title, description, code){
-    return {
-        title: title,
-        description: description,
-        code: code
-    };
+initialize_examples_list();
+
+function editor_load_text(text) {
+    editor.getSession().setValue(text, -1);
+    editor.focus();
+    editor.gotoLine(0, 0, false);
+    editor.renderer.scrollCursorIntoView({ row: 0, column: 0 }, 0.0);
 }
 
-function get_test_examples(){
-    let result = [];
-    for(let i = 0; i < 100; i++){
-        let title = "example #" + i;
-        let description = title + " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent tempor molestie dapibus. Sed vel dolor nec tellus condimentum elementum at eu lectus. Duis mollis pellentesque lacus eget eleifend. Ut sit amet ultricies nisl. Nullam pellentesque interdum libero, sit amet rhoncus dui ullamcorper quis. \nFusce non sem malesuada, auctor sem ut, dapibus metus. Ut libero est, vehicula et nisl non, mollis rutrum risus. Maecenas blandit nibh massa, nec porta felis pulvinar sed. Ut congue felis nec enim posuere dictum. Vestibulum a libero sed arcu euismod posuere non in augue. Vivamus efficitur massa nec dictum finibus. Vestibulum lectus enim, maximus nec bibendum eget, posuere feugiat justo. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.";
-        let code = "Code for " + title + ": " + description;      
-        result.push(get_example(title, description, code));
+function initialize_examples_list() {
+    let examples = [];
+    try {
+        examples= [
+            get_example("Memory arena", example_memory_arena),
+            get_example("Self-hosted Nous parser", example_nous_parser),
+            get_example("Stack-based virtual machine", example_stack_vm),
+            //get_example("test", example_undefined),
+        ];   
+    } catch (e) {
+        console.error("Missing example! Exception: " + e);
     }
-    return result;
-}
 
-let examples = get_test_examples();
-
-function initialize_list(){
-    let list = document.getElementById("examples_list");
+    let list_el = document.getElementById("examples_list");
     for (let i = 0; i < examples.length; i++) {
-        let el = document.createElement("li");
-        el.setAttribute("data-example", examples[i].title);
-        el.setAttribute("data-example-desc", examples[i].description);
-        el.setAttribute("data-example-code", examples[i].code);
-        el.textContent = examples[i].title;
-        list.appendChild(el);
+        let example_el = document.createElement("li");
+        example_el.setAttribute("data-example", examples[i].title);
+        example_el.textContent = examples[i].title;
+        list_el.appendChild(example_el);
     }
-    list.addEventListener("click", function(event) {
-        let el = event.target;
-        let example = el.getAttribute("data-example");
-        if (example){
-            console.log("clicked: " + example);
-            document.getElementById("example_description").innerHTML = el.getAttribute("data-example-desc");
-            editor.getSession().setValue(el.getAttribute("data-example-code"));
+
+    list_el.addEventListener("click", function(event) {
+        let example_el = event.target;
+        let example_title = example_el.getAttribute("data-example");
+        if (example_title) {
+            console.log("clicked: " + example_title);
+            let code = get_example_code_by_title(examples, example_title);
+            editor_load_text(code);
         }
     });
+
+    function get_example_code_by_title(example_list, title){
+        for (let i = 0; i < example_list.length; i++) {
+            if (example_list[i].title == title){
+                return example_list[i].code;
+            }
+        }
+        return "";
+    }
+
+    function get_example(title, code){
+        let result = {
+            title: title,
+            code: remove_batch_file_artifacts(code)
+        };
+        return result;
+    }
 }
-initialize_list();
+
+function remove_batch_file_artifacts(str) {
+    let index = str.indexOf("¿");
+    if (index !== -1 && index + 1 < str.length) {
+        return str.substring(index + 1);
+    } else{
+        return str;
+    }
+}
