@@ -1,3 +1,5 @@
+initialize_compiler();
+
 let editor = ace.edit("code_editor");
 editor.setOptions({
     fontFamily: "Lucida Console",
@@ -8,7 +10,7 @@ editor.setOptions({
     highlightSelectedWord: true,
     highlightGutterLine: true,
     animatedScroll: true,
-    scrollPastEnd: 0.5,
+    scrollPastEnd: 0.2,
     showGutter: true,
     showLineNumbers: true,
     fixedWidthGutter: true,
@@ -22,13 +24,48 @@ editor.setOptions({
 
 var NousScriptMode = ace.require("ace/mode/nous").Mode;
 editor.session.setMode(new NousScriptMode());
+
+let output_window = ace.edit("output");
+output_window.setOptions({
+    fontFamily: "Lucida Console",
+    fontSize: "12px",
+
+    readOnly: true,
+
+    highlightActiveLine: false,
+    highlightSelectedWord: false,
+    animatedScroll: false,
+    scrollPastEnd: 0.2,
+    showGutter: false,
+    showLineNumbers: false,
+    newLineMode: "windows",
+});
+
+// hide cursor in the output window
+output_window.renderer.$cursorLayer.element.style.display = "none";
+
 initialize_examples_list();
+initialize_run_button();
 
 function editor_load_text(text) {
     editor.getSession().setValue(text, -1);
     editor.focus();
     editor.gotoLine(0, 0, false);
     editor.renderer.scrollCursorIntoView({ row: 0, column: 0 }, 0.0);
+}
+
+function print_to_output(text) {
+    if (arguments.length > 1) {
+        text = Array.prototype.slice.call(arguments).join(' ');           
+    } 
+    //console.log(text);
+    let session = output_window.getSession();
+    session.insert({
+        row: session.getLength(),
+        column: 0
+    }, "\n" + text);
+
+    output_window.renderer.scrollToLine(Number.POSITIVE_INFINITY);
 }
 
 function initialize_examples_list() {
@@ -94,5 +131,36 @@ function remove_batch_file_artifacts(str) {
         return str.substring(index + 1);
     } else{
         return str;
+    }
+}
+
+function run_code(options) {        
+    let source = editor.getValue();
+    FS.writeFile(COMPILER_INPUT_PATH, source);
+    output_window.setValue("");
+    Module._compile_input(options);    
+}
+
+function initialize_run_button() {
+    let run_button_el = document.getElementById("run_button");
+    run_button_el.addEventListener("click", function(e) {
+        let options = COMPILER_OPTION_RUN | COMPILER_OPTION_SHOW_AST;
+        run_code(options);
+    });
+}
+
+function initialize_compiler() {
+    if (typeof FS === "undefined"){
+        console.error("Compiler WASM not initialized - file system is not defined");
+        return;
+    }
+
+    if (typeof COMPILER_MAIN_CALLED === "undefined") {
+        Module.callMain();
+    }
+
+    if (typeof COMPILER_MAIN_CALLED === "undefined"
+        || COMPILER_MAIN_CALLED !== true) {
+        console.error("Main invocation in the compiler failed");
     }
 }

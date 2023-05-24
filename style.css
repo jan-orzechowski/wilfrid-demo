@@ -84,3 +84,16 @@ body {
   width: 100%;
   height: 100%;
 }
+
+#output {
+  height: 400px;
+  width: 98%;
+  background-color: white;
+  margin: 2%;
+}
+
+#run_button {
+  padding-left: 20px;
+  text-decoration: underline;
+  cursor: pointer;
+}
