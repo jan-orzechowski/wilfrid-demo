@@ -1,7 +1,23 @@
-var editor = ace.edit("code_editor");
+let editor = ace.edit("code_editor");
 editor.setOptions({
     fontFamily: "Lucida Console",
-    fontSize: "16px"
+    fontSize: "14px",
+
+    highlightActiveLine: true,
+    highlightSelectedWord: true,
+    highlightGutterLine: true,
+    animatedScroll: true,
+    scrollPastEnd: 0.5,
+    showGutter: true,
+    showLineNumbers: true,
+    fixedWidthGutter: true,
+
+    tabSize: 4,
+    useSoftTabs: true,
+    //navigateWithinSoftTabs: true,
+    enableAutoIndent: true,
+
+    newLineMode: "windows",
 });
 
 initialize_examples_list();
