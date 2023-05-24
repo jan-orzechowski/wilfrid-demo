@@ -2,6 +2,7 @@ let editor = ace.edit("code_editor");
 editor.setOptions({
     fontFamily: "Lucida Console",
     fontSize: "14px",
+    cursorStyle: "wide",
 
     highlightActiveLine: true,
     highlightSelectedWord: true,
@@ -14,12 +15,13 @@ editor.setOptions({
 
     tabSize: 4,
     useSoftTabs: true,
-    //navigateWithinSoftTabs: true,
     enableAutoIndent: true,
 
     newLineMode: "windows",
 });
 
+var NousScriptMode = ace.require("ace/mode/nous").Mode;
+editor.session.setMode(new NousScriptMode());
 initialize_examples_list();
 
 function editor_load_text(text) {
