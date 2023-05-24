@@ -45,6 +45,7 @@ function initialize_examples_list() {
     let list_el = document.getElementById("examples_list");
     for (let i = 0; i < examples.length; i++) {
         let example_el = document.createElement("li");
+        example_el.classList.add("example_list_element");
         example_el.setAttribute("data-example", examples[i].title);
         example_el.textContent = examples[i].title;
         list_el.appendChild(example_el);
