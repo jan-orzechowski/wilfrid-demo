@@ -1,5 +1,3 @@
-initialize_compiler();
-
 let editor = ace.edit("code_editor");
 editor.setOptions({
     fontFamily: "Lucida Console",
@@ -138,7 +136,11 @@ function run_code(options) {
     let source = editor.getValue();
     FS.writeFile(COMPILER_INPUT_PATH, source);
     output_window.setValue("");
-    Module._compile_input(options);    
+    try {
+        Module._compile_input(options);
+    } catch (e) {
+        Module._reset_memory();
+    }
 }
 
 function initialize_run_button() {
@@ -147,20 +149,4 @@ function initialize_run_button() {
         let options = COMPILER_OPTION_RUN | COMPILER_OPTION_SHOW_AST;
         run_code(options);
     });
-}
-
-function initialize_compiler() {
-    if (typeof FS === "undefined"){
-        console.error("Compiler WASM not initialized - file system is not defined");
-        return;
-    }
-
-    if (typeof COMPILER_MAIN_CALLED === "undefined") {
-        Module.callMain();
-    }
-
-    if (typeof COMPILER_MAIN_CALLED === "undefined"
-        || COMPILER_MAIN_CALLED !== true) {
-        console.error("Main invocation in the compiler failed");
-    }
 }
