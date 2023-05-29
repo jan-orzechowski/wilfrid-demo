@@ -73,6 +73,7 @@ function initialize_examples_list() {
             get_example("Memory arena", example_memory_arena),
             get_example("Self-hosted Nous parser", example_nous_parser),
             get_example("Stack-based virtual machine", example_stack_vm),
+            get_example("Formatted printing", example_printf),
             //get_example("test", example_undefined),
         ];   
     } catch (e) {
