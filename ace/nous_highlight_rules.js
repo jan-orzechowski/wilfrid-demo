@@ -6,12 +6,12 @@ ace.define('ace/mode/nous_highlight_rules', function(require, exports, module) {
 
     var NousHighlightRules = function() {
         var keywords = (
-            "else|break|case|return|if|const|" +
+            "else|break|case|return|if|const|enum|" +
             "continue|struct|union|default|switch|for|" +
-            "fn|variadic|extern|let|new|auto|delete"
+            "fn|variadic|extern|let|new|auto|delete|while|do"
         );
         var builtinTypes = (
-            "string|int|uint|long|ulong|char|float|bool"
+            "int|uint|long|ulong|char|float|bool"
         );
         var builtinFunctions = (
             "printf|assert"
@@ -25,21 +25,22 @@ ace.define('ace/mode/nous_highlight_rules', function(require, exports, module) {
             "support.type": builtinTypes
         }, "");
         
-        var stringEscapeRe = "\\\\(?:[0-7]{3}|x\\h{2}|u{4}|U\\h{6}|[abfnrtv'\"\\\\])".replace(/\\h/g, "[a-fA-F\\d]");
-
         this.$rules = {
             "start" : [
                 {
                     token : "comment",
                     regex : "\\/\\/.*$"
-                },
-                {
-                    token : "comment.start", // multi line comment
+                }, {
+                    token : "comment", // multi line comment
                     regex : "\\/\\*",
                     next : "comment"
                 }, {
-                    token : "string", // single line
-                    regex : /"(?:[^"\\]|\\.)*?"/
+                    token : "string.regexp",
+                    regex : "[/](?:(?:\\[(?:\\\\]|[^\\]])+\\])|(?:\\\\/|[^\\]/]))*[/][gimy]*\\s*(?=[).,;]|$)"
+                }, {
+                    token : "string", // " string start
+                    regex : '"',
+                    next : "qqstring"
                 }, {
                     token : "constant.numeric", // hex
                     regex : "0[xX][0-9a-fA-F]+\\b" 
@@ -79,12 +80,26 @@ ace.define('ace/mode/nous_highlight_rules', function(require, exports, module) {
             ],
             "comment" : [
                 {
-                    token : "comment.end",
+                    token : "comment",
                     regex : "\\*\\/",
                     next : "start"
                 }, {
                     defaultToken : "comment"
                 }
+            ],
+            "qqstring" : [
+                {
+                    token : "constant.language.escape",
+                    regex : '\\\\(?:[nrtvef\\\\"$]|[0-7]{1,3}|x[0-9A-Fa-f]{1,2})'
+                }, {
+                    token : "variable",
+                    regex : /\$[\w]+(?:\[[\w\]+]|[=\-]>\w+)?/
+                }, {
+                    token : "variable",
+                    regex : /\$\{[^"\}]+\}?/
+                },
+                { token : "string", regex : '"', next : "start"},
+                { defaultToken : "string"}
             ]
         };
     };
