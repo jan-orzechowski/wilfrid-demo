@@ -20,8 +20,8 @@ editor.setOptions({
     newLineMode: "windows",
 });
 
-var NousScriptMode = ace.require("ace/mode/nous").Mode;
-editor.session.setMode(new NousScriptMode());
+var WilfridScriptMode = ace.require("ace/mode/wilfrid").Mode;
+editor.session.setMode(new WilfridScriptMode());
 
 let output_window = ace.edit("output");
 output_window.setOptions({

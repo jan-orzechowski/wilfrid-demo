@@ -1,10 +1,10 @@
-ace.define('ace/mode/nous_highlight_rules', function(require, exports, module) {
+ace.define('ace/mode/wilfrid_highlight_rules', function(require, exports, module) {
     "use strict";
 
     var oop = require("../lib/oop");
     var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 
-    var NousHighlightRules = function() {
+    var WilfridHighlightRules = function() {
         var keywords = (
             "else|break|case|return|if|const|enum|" +
             "continue|struct|union|default|switch|for|" +
@@ -106,7 +106,7 @@ ace.define('ace/mode/nous_highlight_rules', function(require, exports, module) {
             ]
         };
     };
-    oop.inherits(NousHighlightRules, TextHighlightRules);
+    oop.inherits(WilfridHighlightRules, TextHighlightRules);
 
-    exports.NousHighlightRules = NousHighlightRules;
+    exports.WilfridHighlightRules = WilfridHighlightRules;
 });
