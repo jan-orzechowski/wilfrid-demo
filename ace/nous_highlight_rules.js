@@ -38,6 +38,9 @@ ace.define('ace/mode/nous_highlight_rules', function(require, exports, module) {
                     token : "string.regexp",
                     regex : "[/](?:(?:\\[(?:\\\\]|[^\\]])+\\])|(?:\\\\/|[^\\]/]))*[/][gimy]*\\s*(?=[).,;]|$)"
                 }, {
+                    token: "string",
+                    regex: "'(?:\\\\(?:[nrtvef\\\\\"$]|[0-7]{1,3}|x[0-9A-Fa-f]{1,2})|.)?'"
+                }, {
                     token : "string", // " string start
                     regex : '"',
                     next : "qqstring"
@@ -66,7 +69,7 @@ ace.define('ace/mode/nous_highlight_rules', function(require, exports, module) {
                     regex : "[a-zA-Z_$][a-zA-Z0-9_$]*\\b\\(?"
                 }, {
                     token : "keyword.operator",
-                    regex : "!|\\$|%|&|\\*|\\-\\-|\\-|\\+\\+|\\+|~|==|=|!=|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\\|\\||\\?\\:|\\*=|%=|\\+=|\\-=|&=|\\^="
+                    regex : "!|\\$|\\@|#|%|&|\\^|\\*|\\-\\-|\\-|\\+\\+|\\+|~|==|=|!=|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\\|\\||\\?\\:|\\*=|%=|\\+=|\\-=|&=|\\^="
                 }, {
                     token : "paren.lparen",
                     regex : "[[({]"
