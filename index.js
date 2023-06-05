@@ -20,7 +20,7 @@ editor.setOptions({
     newLineMode: "windows",
 });
 
-var WilfridScriptMode = ace.require("ace/mode/wilfrid").Mode;
+let WilfridScriptMode = ace.require("ace/mode/wilfrid").Mode;
 editor.session.setMode(new WilfridScriptMode());
 
 let output_window = ace.edit("output");
@@ -38,6 +38,8 @@ output_window.setOptions({
     showLineNumbers: false,
     newLineMode: "windows",
 });
+
+let CScriptMode = ace.require("ace/mode/c_cpp").Mode;
 
 // hide cursor in the output window
 output_window.renderer.$cursorLayer.element.style.display = "none";
@@ -135,8 +137,15 @@ function remove_batch_file_artifacts(str) {
 
 function run_code(options) {        
     let source = editor.getValue();
-    FS.writeFile(COMPILER_INPUT_PATH, source);
+    FS.writeFile(COMPILER_INPUT_PATH, source);    
+    
     output_window.setValue("");
+    if (options & COMPILER_OPTION_PRINT_C){
+        output_window.session.setMode(new CScriptMode());
+    } else {
+        output_window.session.setMode();
+    }
+    
     try {
         Module._compile_input(options);
     } catch (e) {
