@@ -54,10 +54,15 @@ body {
 #examples_list_header {
   margin: 5px;
   padding-left: 10px;
+
+#examples_introduction_list {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
 }
 
 #examples_list {
-  list-style-type: none; 
+  list-style-type: none;
   padding: 0px;
   margin: 0px;
 }

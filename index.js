@@ -69,35 +69,50 @@ function print_to_output(text) {
 }
 
 function initialize_examples_list() {
-    let examples = [];
+    let examples;
+    let introductions;
     try {
-        examples= [
-            get_example("Memory arena", example_memory_arena),
-            get_example("Self-hosted Nous parser", example_nous_parser),
-            get_example("Stack-based virtual machine", example_stack_vm),
-            get_example("Formatted printing", example_printf),
-            //get_example("test", example_undefined),
+        introductions = [
+            get_example("Hello, world!", example_hello_world),
+            get_example("Variables", example_variables),
+            get_example("Functions and methods", example_functions_and_methods),
+            get_example("Structs, unions, and enums", example_structs_and_unions),
+            get_example("Control flow", example_control_flow),
+            get_example("Pointers", example_pointers),
+            get_example("Operators", example_operators),
+            get_example("Memory management", example_memory_management),                      
+            get_example("Dynamic arrays", example_dynamic_lists),
         ];   
+        examples = [
+            get_example("Linked list", example_linked_list),
+            get_example("Binary tree", example_binary_tree),
+            get_example("Hash table", example_hashmap),
+            get_example("Stack allocator", example_memory_arena),
+            get_example("Basic virtual machine", example_stack_vm),            
+            get_example("XML parser", example_xml_parser),            
+        ];
     } catch (e) {
         console.error("Missing example! Exception: " + e);
     }
 
+    let list_intro_el = document.getElementById("examples_introduction_list");
+    create_buttons_for_examples(introductions, list_intro_el);
+    
     let list_el = document.getElementById("examples_list");
-    for (let i = 0; i < examples.length; i++) {
-        let example_el = document.createElement("li");
-        example_el.classList.add("example_list_element");
-        example_el.setAttribute("data-example", examples[i].title);
-        example_el.textContent = examples[i].title;
-        list_el.appendChild(example_el);
-    }
+    create_buttons_for_examples(examples, list_el);
 
     let previously_clicked_el = null;
-    list_el.addEventListener("click", function(event) {
+
+    let lists_parent = document.getElementById("examples_list_panel");
+    lists_parent.addEventListener("click", function(event) {
         let example_el = event.target;
         let example_title = example_el.getAttribute("data-example");
         if (example_title) {
             let code = get_example_code_by_title(examples, example_title);
-            
+            if (code === ""){
+                code = get_example_code_by_title(introductions, example_title);
+            }
+
             editor_load_text(code);
 
             if (previously_clicked_el) {
@@ -107,6 +122,18 @@ function initialize_examples_list() {
             previously_clicked_el = example_el;
         }
     });
+    
+    list_el.children[0].click();
+
+    function create_buttons_for_examples(list, list_el) {
+        for (let i = 0; i < list.length; i++) {
+            let example_el = document.createElement("li");
+            example_el.classList.add("example_list_element");
+            example_el.setAttribute("data-example", list[i].title);
+            example_el.textContent = list[i].title;
+            list_el.appendChild(example_el);
+        }
+    }
 
     function get_example_code_by_title(example_list, title){
         for (let i = 0; i < example_list.length; i++) {
