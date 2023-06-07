@@ -103,10 +103,19 @@ body {
   width: 98%;
   background-color: white;
   margin: 2%;
+#output_buttons {
+  display: flex;
+  justify-content: center;
+  padding-left: 10%;
+  padding-right: 10%;
 }
 
 .output_button {
+  flex: 1 1;
+  text-align: center;
   cursor: pointer;
+  margin: 5px;
+  border-radius: 10px;
   user-select: none;
 }
 

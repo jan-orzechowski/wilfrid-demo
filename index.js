@@ -46,6 +46,7 @@ output_window.renderer.$cursorLayer.element.style.display = "none";
 
 initialize_examples_list();
 initialize_run_button();
+initialize_compile_button();
 
 function editor_load_text(text) {
     editor.getSession().setValue(text, -1);
@@ -58,7 +59,7 @@ function print_to_output(text) {
     if (arguments.length > 1) {
         text = Array.prototype.slice.call(arguments).join(' ');           
     } 
-    //console.log(text);
+
     let session = output_window.getSession();
     session.insert({
         row: session.getLength(),
@@ -183,7 +184,15 @@ function run_code(options) {
 function initialize_run_button() {
     let run_button_el = document.getElementById("run_button");
     run_button_el.addEventListener("click", function(e) {
-        let options = COMPILER_OPTION_RUN | COMPILER_OPTION_SHOW_AST;
+        let options = COMPILER_OPTION_RUN;
+        run_code(options);
+    });
+}
+
+function initialize_compile_button() {
+    let compile_button_el = document.getElementById("compile_button");
+    compile_button_el.addEventListener("click", function(e) {
+        let options = COMPILER_OPTION_PRINT_C;
         run_code(options);
     });
 }
