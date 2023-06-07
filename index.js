@@ -187,3 +187,44 @@ function initialize_run_button() {
         run_code(options);
     });
 }
+
+var parent = document.getElementById("code_and_output_panels");
+var left = document.getElementById("code_panel");
+var right = document.getElementById("output_panel");
+var bar = document.getElementById("dragbar_right");
+
+let dragbar = document.getElementById("dragbar_right");
+let is_dragging = false;
+
+document.addEventListener("mousedown", function(e) {
+    if (e.target === dragbar) {
+        is_dragging = true;
+    }
+});
+  
+document.addEventListener("mousemove", function(e) {
+    if (false === is_dragging) {
+        return false;
+    }
+    
+    if (document.selection) {
+        document.selection.empty()
+    } else {
+        window.getSelection().removeAllRanges();
+    }
+   
+    var container_offset_left = parent.offsetLeft;
+    var pointer_relative_x = e.clientX - container_offset_left;
+    var min_width_px = 300;
+
+    left.style.flexGrow = 0;
+    left.style.width = (Math.max(min_width_px, pointer_relative_x)) + 'px';
+});
+  
+document.addEventListener("mouseup", function(e) {
+    is_dragging = false;
+    editor.resize();
+    editor.renderer.updateFull();
+    output_window.resize();
+    output_window.renderer.updateFull();
+});

@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 html, body {
   height: 100%;
   margin: 0;
@@ -34,21 +37,27 @@ body {
   color:darkblue;
 }
 
-#panels_container{
+#panels_container {
   display: flex;  
   height: 95vh;
 }
 
 #examples_list_panel {
-  flex: 20%;
+  flex: 15%;
+  list-style-type: none; 
+}
+
+#code_and_output_panels {
+  flex: 85%;
+  display: flex; 
 }
 
 #code_panel {
-  flex: 50%;
+  flex: 2 1 auto;
 }
 
 #output_panel {
-  flex: 40%;
+  flex: 1 1 auto;
 }
 
 #examples_list_header {
@@ -83,7 +92,6 @@ body {
 }
 
 #code_editor {
-  min-height: 200px;
   background-color: whitesmoke;
   position: relative;
   width: 100%;
@@ -97,8 +105,25 @@ body {
   margin: 2%;
 }
 
-#run_button {
-  padding-left: 20px;
-  text-decoration: underline;
+.output_button {
   cursor: pointer;
+  user-select: none;
+}
+
+.dragbar {
+  margin-left:3px;
+  padding: 6px;
+  cursor: ew-resize;
+}
+
+.dragbar:hover {
+  padding: 6px;
+  background-color: var(--accent-color);
+  /* background-color: var(--accent-color);
+  background: repeating-linear-gradient(
+    45deg,
+    var(--bg-two-color),
+    var(--bg-two-color) 5px,
+    var(--accent-color) 5px,
+    var(--accent-color) 10px); */
 }
