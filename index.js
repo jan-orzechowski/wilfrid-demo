@@ -1,79 +1,16 @@
-let editor = ace.edit("code_editor");
-editor.setOptions({
-    fontFamily: "Lucida Console",
-    fontSize: "14px",
-    cursorStyle: "wide",
+let code_editor = null
+let output_window = null;
+let ace_editor_wilfrid_mode = null;
+let ace_editor_c_mode = null;
 
-    highlightActiveLine: true,
-    highlightSelectedWord: true,
-    highlightGutterLine: true,
-    animatedScroll: true,
-    scrollPastEnd: 0.2,
-    showGutter: true,
-    showLineNumbers: true,
-    fixedWidthGutter: true,
-    showPrintMargin: false,
-    
-    tabSize: 4,
-    useSoftTabs: true,
-    enableAutoIndent: true,
-
-    newLineMode: "windows",
-});
-
-let WilfridScriptMode = ace.require("ace/mode/wilfrid").Mode;
-editor.session.setMode(new WilfridScriptMode());
-
-let output_window = ace.edit("output");
-output_window.setOptions({
-    fontFamily: "Lucida Console",
-    fontSize: "14px",
-
-    readOnly: true,
-
-    highlightActiveLine: false,
-    highlightSelectedWord: false,
-    animatedScroll: false,
-    scrollPastEnd: 0.2,
-    showGutter: false,
-    showLineNumbers: false,
-    showPrintMargin: false,
-    newLineMode: "windows",
-});
-
-let CScriptMode = ace.require("ace/mode/c_cpp").Mode;
-
-// hide cursor in the output window
-output_window.renderer.$cursorLayer.element.style.display = "none";
-
+initialize_editors();
 initialize_examples_list();
-initialize_run_button();
-initialize_compile_button();
-
-function editor_load_text(text) {
-    editor.getSession().setValue(text, -1);
-    editor.focus();
-    editor.gotoLine(0, 0, false);
-    editor.renderer.scrollCursorIntoView({ row: 0, column: 0 }, 0.0);
-}
-
-function print_to_output(text) {
-    if (arguments.length > 1) {
-        text = Array.prototype.slice.call(arguments).join(' ');           
-    } 
-
-    let session = output_window.getSession();
-    session.insert({
-        row: session.getLength(),
-        column: 0
-    }, "\n" + text);
-
-    output_window.renderer.scrollToLine(Number.POSITIVE_INFINITY);
-}
+initialize_compile_buttons();
+initialize_dragbar();
 
 function initialize_examples_list() {
-    let examples;
-    let introductions;
+    let examples = null;
+    let introductions = null;
     try {
         introductions = [
             get_example("Hello, world!", example_hello_world),
@@ -116,7 +53,7 @@ function initialize_examples_list() {
                 code = get_example_code_by_title(introductions, example_title);
             }
 
-            editor_load_text(code);
+            code_editor_load_text(code);
 
             if (previously_clicked_el) {
                 previously_clicked_el.classList.remove("example_selected");                
@@ -173,13 +110,65 @@ function remove_batch_file_artifacts(str) {
     }
 }
 
+function initialize_editors() {
+    code_editor = ace.edit("code_editor");
+    code_editor.setOptions({
+        fontFamily: "Lucida Console",
+        fontSize: "14px",
+        cursorStyle: "wide",
+
+        highlightActiveLine: true,
+        highlightSelectedWord: true,
+        highlightGutterLine: true,
+        animatedScroll: true,
+        scrollPastEnd: 0.2,
+        showGutter: true,
+        showLineNumbers: true,
+        fixedWidthGutter: true,
+        showPrintMargin: false,
+        
+        tabSize: 4,
+        useSoftTabs: true,
+        enableAutoIndent: true,
+
+        newLineMode: "windows",
+    });
+
+    ace_editor_wilfrid_mode = ace.require("ace/mode/wilfrid").Mode;
+    code_editor.session.setMode(new ace_editor_wilfrid_mode());
+
+    output_window = ace.edit("output");
+    output_window.setOptions({
+        fontFamily: "Lucida Console",
+        fontSize: "14px",
+
+        readOnly: true,
+
+        highlightActiveLine: false,
+        highlightSelectedWord: false,
+        animatedScroll: false,
+        scrollPastEnd: 0.2,
+        showGutter: false,
+        showLineNumbers: false,
+        showPrintMargin: false,
+        useWrapMode: false,
+        
+        newLineMode: "windows",
+    });
+
+    ace_editor_c_mode = ace.require("ace/mode/c_cpp").Mode;
+
+    // hide cursor in the output window
+    output_window.renderer.$cursorLayer.element.style.display = "none";
+}
+
 function run_code(options) {        
-    let source = editor.getValue();
+    let source = code_editor.getValue();
     FS.writeFile(COMPILER_INPUT_PATH, source);    
     
     output_window.setValue("");
     if (options & COMPILER_OPTION_PRINT_C){
-        output_window.session.setMode(new CScriptMode());
+        output_window.session.setMode(new ace_editor_c_mode());
     } else {
         output_window.session.setMode();
     }
@@ -191,15 +180,34 @@ function run_code(options) {
     }
 }
 
-function initialize_run_button() {
+function code_editor_load_text(text) {
+    code_editor.getSession().setValue(text, -1);
+    code_editor.focus();
+    code_editor.gotoLine(0, 0, false);
+    code_editor.renderer.scrollCursorIntoView({ row: 0, column: 0 }, 0.0);
+}
+
+function print_to_output(text) {
+    if (arguments.length > 1) {
+        text = Array.prototype.slice.call(arguments).join(' ');           
+    } 
+
+    let session = output_window.getSession();
+    session.insert({
+        row: session.getLength(),
+        column: 0
+    }, "\n" + text);
+
+    output_window.renderer.scrollToLine(Number.POSITIVE_INFINITY);
+}
+
+function initialize_compile_buttons() {
     let run_button_el = document.getElementById("run_button");
     run_button_el.addEventListener("click", function(e) {
         let options = COMPILER_OPTION_RUN;
         run_code(options);
     });
-}
 
-function initialize_compile_button() {
     let compile_button_el = document.getElementById("compile_button");
     compile_button_el.addEventListener("click", function(e) {
         let options = COMPILER_OPTION_PRINT_C;
@@ -207,43 +215,43 @@ function initialize_compile_button() {
     });
 }
 
-var parent = document.getElementById("code_and_output_panels");
-var left = document.getElementById("code_panel");
-var right = document.getElementById("output_panel");
-var bar = document.getElementById("dragbar_right");
+function initialize_dragbar() {
+    var parent = document.getElementById("code_and_output_panels");
+    var left_panel = document.getElementById("code_panel");
+    let dragbar = document.getElementById("dragbar");
 
-let dragbar = document.getElementById("dragbar_right");
-let is_dragging = false;
-
-document.addEventListener("mousedown", function(e) {
-    if (e.target === dragbar) {
-        is_dragging = true;
-    }
-});
-  
-document.addEventListener("mousemove", function(e) {
-    if (false === is_dragging) {
-        return false;
-    }
+    let is_dragging = false;
     
-    if (document.selection) {
-        document.selection.empty()
-    } else {
-        window.getSelection().removeAllRanges();
-    }
-   
-    var container_offset_left = parent.offsetLeft;
-    var pointer_relative_x = e.clientX - container_offset_left;
-    var min_width_px = 300;
-
-    left.style.flexGrow = 0;
-    left.style.width = (Math.max(min_width_px, pointer_relative_x)) + 'px';
-});
-  
-document.addEventListener("mouseup", function(e) {
-    is_dragging = false;
-    editor.resize();
-    editor.renderer.updateFull();
-    output_window.resize();
-    output_window.renderer.updateFull();
-});
+    document.addEventListener("mousedown", function(e) {
+        if (e.target === dragbar) {
+            is_dragging = true;
+        }
+    });
+      
+    document.addEventListener("mousemove", function(e) {
+        if (false === is_dragging) {
+            return false;
+        }
+        
+        if (document.selection) {
+            document.selection.empty()
+        } else {
+            window.getSelection().removeAllRanges();
+        }
+       
+        var container_offset_left = parent.offsetLeft;
+        var pointer_relative_x = e.clientX - container_offset_left;
+        var min_width_px = 300;
+    
+        left_panel.style.flexGrow = 0;
+        left_panel.style.width = (Math.max(min_width_px, pointer_relative_x)) + 'px';
+    });
+      
+    document.addEventListener("mouseup", function(e) {
+        is_dragging = false;
+        code_editor.resize();
+        code_editor.renderer.updateFull();
+        output_window.resize();
+        output_window.renderer.updateFull();
+    });
+}

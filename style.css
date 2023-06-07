@@ -145,13 +145,13 @@ body {
   background-color: var(--accent-color);
 }
 
-.dragbar {
-  margin-left:3px;
+#dragbar {
+  margin-left: 3px;
   padding: 6px;
   cursor: ew-resize;
 }
 
-.dragbar:hover {
+#dragbar:hover {
   padding: 6px;
   background-color: var(--accent-color);
 }
