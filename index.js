@@ -156,10 +156,18 @@ function initialize_examples_list() {
 
 function remove_batch_file_artifacts(str) {
     let index = str.indexOf("¿");
-    if (index !== -1 && index + 1 < str.length) {
+    if (index !== -1 
+        && index + 1 < str.length) {
         return str.substring(index + 1);
-    } else{
-        return str;
+    } else {
+        index = str.indexOf("\n");
+        if (index !== -1 
+            && index < 2 
+            && index + 1 < str.length) {
+            return str.substring(index + 1);
+        } else {
+            return str;
+        }
     }
 }
 
