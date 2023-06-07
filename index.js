@@ -12,7 +12,8 @@ editor.setOptions({
     showGutter: true,
     showLineNumbers: true,
     fixedWidthGutter: true,
-
+    showPrintMargin: false,
+    
     tabSize: 4,
     useSoftTabs: true,
     enableAutoIndent: true,
@@ -26,7 +27,7 @@ editor.session.setMode(new WilfridScriptMode());
 let output_window = ace.edit("output");
 output_window.setOptions({
     fontFamily: "Lucida Console",
-    fontSize: "12px",
+    fontSize: "14px",
 
     readOnly: true,
 
@@ -36,6 +37,7 @@ output_window.setOptions({
     scrollPastEnd: 0.2,
     showGutter: false,
     showLineNumbers: false,
+    showPrintMargin: false,
     newLineMode: "windows",
 });
 
