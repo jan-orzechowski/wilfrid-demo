@@ -1,6 +1,7 @@
 .vscode
 ace
 wasm
+build
 
 # debug
 
