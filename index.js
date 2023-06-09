@@ -30,6 +30,7 @@ function initialize_examples_list() {
             get_example("Stack allocator", example_memory_arena),
             get_example("Basic virtual machine", example_stack_vm),            
             get_example("XML parser", example_xml_parser),            
+            get_example("Quine", example_quine),            
         ];
     } catch (e) {
         console.error("Missing example! Exception: " + e);
