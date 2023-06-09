@@ -137,6 +137,7 @@ function initialize_editors() {
 
     ace_editor_wilfrid_mode = ace.require("ace/mode/wilfrid").Mode;
     code_editor.session.setMode(new ace_editor_wilfrid_mode());
+    code_editor.setKeyboardHandler("ace/keyboard/vscode");
 
     output_window = ace.edit("output");
     output_window.setOptions({
