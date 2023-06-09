@@ -166,6 +166,11 @@ function initialize_editors() {
 
 function run_code(options) {        
     let source = code_editor.getValue();
+
+    if (source === null || source === "") {
+        source = " ";
+    }
+
     FS.writeFile(COMPILER_INPUT_PATH, source);    
     
     output_window.setValue("");
