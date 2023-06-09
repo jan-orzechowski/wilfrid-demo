@@ -22,14 +22,15 @@ body {
 }
 
 #header {
+  display: flex;
+  justify-content: flex-start;
   height: 5vh;
   color: var(--accent-color);
 }
 
 #header_name {
-  display: inline-block;
   font-size: 30px;
-  padding-left: 1vh;
+  padding-left: 1.5vh;
   padding-top: 0.2vh;
   font-weight: bolder;
   color: white;
@@ -38,15 +39,14 @@ body {
 }
 
 #header_description {
-  display: inline-block;
-  font-size: 12px;
-  padding-left: 10px;
+  font-size: 14px;
+  padding-left: 12px;
 }
 
 #header_link {
-  display: inline-block;
-  font-size: 12px;
+  font-size: 14px;
   text-decoration: underline;
+  color: var(--light-color);
 }
 
 #panels_container {
@@ -78,6 +78,7 @@ body {
   color: var(--light-color);
   text-shadow: 1px 1px 5px var(--accent-color);
   user-select: none; 
+  font-weight: bold;
 }
 
 #examples_introduction_list {
