@@ -148,11 +148,14 @@ body {
 
 #dragbar {
   margin-left: 3px;
-  padding: 6px;
+  margin-right: 3px;
+  padding: 3px;
   cursor: ew-resize;
 }
 
 #dragbar:hover {
-  padding: 6px;
+  margin-left: 3px;
+  margin-right: 3px;
+  padding: 3px;
   background-color: var(--accent-color);
 }
