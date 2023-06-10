@@ -19,6 +19,7 @@ body {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   background: var(--bg-one-color);
   background: linear-gradient(0deg, var(--bg-one-color) 0%, var(--bg-two-color) 100%);
+  background-attachment: fixed;
 }
 
 #header {
@@ -57,6 +58,7 @@ body {
 #examples_list_panel {
   flex: 15%;
   list-style-type: none; 
+  overflow-y: hidden;
 }
 
 #code_and_output_panels {
