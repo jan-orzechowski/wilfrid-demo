@@ -120,7 +120,7 @@ body {
 }
 
 #output {
-  height: 45vh;
+  height: 65vh;
   width: 100%;
   background-color: var(--light-color);
   line-height: 1.2;
