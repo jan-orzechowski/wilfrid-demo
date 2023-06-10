@@ -64,7 +64,7 @@ function initialize_examples_list() {
         }
     });
     
-    list_el.children[0].click();
+    list_intro_el.children[0].click();
 
     function create_buttons_for_examples(list, list_el) {
         for (let i = 0; i < list.length; i++) {
