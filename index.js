@@ -192,6 +192,10 @@ function code_editor_load_text(text) {
     code_editor.focus();
     code_editor.gotoLine(0, 0, false);
     code_editor.renderer.scrollCursorIntoView({ row: 0, column: 0 }, 0.0);
+
+    // clean undo history
+    code_editor.getSession().setUndoManager(new ace.UndoManager());
+    output_window.getSession().setUndoManager(new ace.UndoManager());
 }
 
 function print_to_output(text) {
