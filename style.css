@@ -24,7 +24,7 @@ body {
 #header {
   display: flex;
   justify-content: flex-start;
-  height: 5vh;
+  height: 7vh;
   color: var(--accent-color);
 }
 
@@ -51,7 +51,7 @@ body {
 
 #panels_container {
   display: flex;  
-  height: 95vh;
+  height: 93vh;
 }
 
 #examples_list_panel {
