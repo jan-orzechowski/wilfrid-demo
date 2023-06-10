@@ -68,6 +68,7 @@ body {
 
 #code_panel {
   flex: 2 1 auto;
+  background-color: white;
 }
 
 #output_panel {
