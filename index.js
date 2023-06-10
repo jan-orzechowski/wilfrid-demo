@@ -183,7 +183,12 @@ function run_code(options) {
     try {
         Module._compile_input(options);
     } catch (e) {
-        Module._reset_memory();
+        try {
+            Module._reset_memory();
+        } catch (e) {
+            // in this case something is very wrong
+            location.reload();
+        }
     }
 }
 
